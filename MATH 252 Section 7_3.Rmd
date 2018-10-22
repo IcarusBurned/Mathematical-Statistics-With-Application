@@ -1,0 +1,13 @@
+<style type="text/css">
+    ol { list-style-type: lower-alpha; }
+</style>
+
+# CHAPTER 7  
+
+## Section 7.3  The Central Limit Theorem   
+
+### "As a rule of thumb, the sample size must be at least 30 for the central limit theorem to hold true."  
+
+### Main Topics   
+- Theorem 7.4: Let $Y_1,...,Y_n$ be independent and identically distributed random variables with $E(Y_i) = \mu < \infty$ and $V(Y_i) = \sigma^2 < \infty$.  Define  $U_n = \sqrt{n}\left(\frac{\overline{Y} - \mu}{\sigma}\right)$ where $\overline{Y} = \frac{1}{n}\sum\limits_{i = 1}^nY_i$.  Then the distribution function of $U_n$ converges to a standard notmal distribution function as $n\rightarrow\infty$.  
+

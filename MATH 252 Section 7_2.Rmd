@@ -1,0 +1,543 @@
+<style type="text/css">
+    ol { list-style-type: lower-alpha; }
+</style>
+
+# CHAPTER 7  
+
+## Section 7.2  Sampling Distributions Related to the Normal Distribution   
+
+### "Statistics is about replacing expectations with averages."
+
+### Main Topics  
+
+- Random Sample of A Population: iid Random Variables, $Y_1,...,Y_n$  
+- Functions of random samples are used to estimate common population parameters, for example mean, $\mu$ and variance, $\sigma^2$  
+- An estimate of $\mu$ is given by the sample mean $\overline{Y} = \frac{1}{n}\sum\limits_{i = 1}^n Y_i$
+- An estimate of $\sigma^2$ is given by the sample variance $S^2 = \frac{1}{n-1}\sum\limits_{i = 1}^2\left(Y_i - \overline{Y}\right)^2$
+
+- Important theorems for normally distributed random samples: 
+    
+    - Theorem 7.1:  Let $Y_1,...,Y_n$ be a random sample of size n from a normal distribution with mean $\mu$ and   variance $\sigma^2$.  Then $\overline{Y} = \frac{1}{n}\sum\limits_{i = 1}^n Y_i$ is normally distributed with mean $\mu_{\overline{Y}} = \mu$ and variance $\sigma_{\overline{Y}}^2 = \sigma^2 / n$   
+       
+    - Theorem 7.2:  Let $Y_1,...,Y_n$ be a random sample of size n from a normal distribution with mean $\mu$ and variance $\sigma^2$. Then $Z_i = \left( \frac{Y_i - \mu}{\sigma} \right)$ are independent standard normal random variables, where $i = 1,2,..., n$, and $\sum\limits_{i = 1}^{n}Z_i^2 = \sum\limits_{i = 1}^n \left( \frac{Y_i - \mu}{\sigma} \right )^2$ has a $\chi^2$ distribution with n degrees of freedom.  
+      
+    - Theorem 7.3:  Let $Y_1,...,Y_n$ be a random sample from a normal distribution with mean $\mu$ and variance $\sigma^2$. Then $\frac{(n-1)S^2}{\sigma^2} = \frac{1}{\sigma^2}\sum\limits_{i = 1}^n \left(Y_i - \overline{Y}\right)^2$ has a $\chi^2$ distribution with $(n-1)$ degrees of freedom.  Also $\overline{Y}$ and $S^2$ are independent random variables.  
+      
+- Distributions importent to estimation of unknowm parameters.  
+
+    - Definition 7.2: Let $Z$ be a standard normal random variable, and let $W$ be a $\chi^2$-distributed variable with $\nu$ degrees of freedom.  Then, if $Z$ and $W$ are independent, $T = $\frac{Z}{\sqrt{W/\nu}}$ is said to have a t distribution with $\nu$ degrees of freedom.  
+    
+        Note: The t distributions density function is symetric about zero, $E(T) = 0, \text{ for } \nu > 1$, and $V(T) = \frac{\nu}{\nu - 2} \text{ for } \nu > 2$  
+    
+        Note: The t distribution is useful when we want to estimate parameters of a standard normal random variable and neither $\mu$ nor $\sigma^2$ are known.  
+    
+    - Definition 7.3: Let $W_1$ and $W_2$ be independent $\chi^2$-distributed random variables with $\nu_1$ and $\nu_2$ degrees of freedom respectively.  Then $F = \frac{W_1/\nu_1}{W_2/\nu_2}$ is said to have an F distribution with $\nu_1$ numerator degrees of freedom and $\nu_2$ denominator degrees of freedom.  
+    
+        Note: $E(F) = \frac{\nu_2}{\nu_2 -2} \text{ for } \nu_2 > 2$, and $V(F) = \frac{2\nu_2^2(\nu_1 + \nu_2 - 2)}{\nu_1(\nu_2 - 2)^2(\nu_2 - 4)} \text{ for } \nu_2 > 4$    
+    
+        Note: The F distribution is used to compare the variances of two independent normally distributed random samples.  
+    
+    
+### EXERCISES  
+
+#### 7.1 Refer to Example 7.1. The amount of fill dispensed by a bottling machine is normally distributed with $\sigma = 1$ ounce. If $n = 9$ bottles are randomly selected from the output of the machine, we found that the probability that the sample mean will be within 0.3 ounce of the true mean is 0.6318. Suppose that $\overline{Y}$ is to be computed using a sample of size n.
+
+In the following parts of the problem, I will use:  
+
+For $n \geq 1$, since $\sigma = 1$  $P(|\overline{Y} - \mu | \leq 0.3) = P(-0.3 \leq \overline{Y} - \mu \leq 0.3) = P(-0.3 * \sqrt{n} / \sigma \leq \sqrt{n}(\overline{Y} - \mu)/\sigma \leq 0.3) = P(-0.3\sqrt{n} \leq Z \leq 0.3 \sqrt{n}$ 
+
+a) If $n=16$, what is $P(|\overline{Y} - \mu | \leq 0.3)$?    
+b) Find $P(|\overline{Y} - \mu | \leq 0.3)$ when $\overline{Y}$ is to be computed using samples of sizes $n=25, n=36, n = 49, \text{ and } n = 64$  
+
+    Need to compute  
+    
+    $n=16: \quad P(-1.2 \leq Z \leq 1.2) = 1 - 2P(Z \geq 1.2)$  
+    $n=25: \quad P(-1.5 \leq Z \leq 1.5) = 1 - 2P(Z \geq 1.5)$  
+    $n=36: \quad P(-1.8 \leq Z \leq 1.8) = 1 - 2P(Z \geq 1.8)$  
+    $n=49: \quad P(-2.1 \leq Z \leq 2.1) = 1 - 2P(Z \geq 2.1)$  
+    $n=64: \quad P(-2.4 \leq Z \leq 2.4) = 1 - 2P(Z \geq 2.4)$  
+    
+````{r}
+
+to_do_problem <- function(q, n, sigma)
+{
+  1 - 2 * pnorm(q*sqrt(n), sd = sigma, lower.tail = FALSE)
+}
+n16 = to_do_problem(.3, 16, 1)
+n25 = to_do_problem(.3, 25, 1)
+n36 = to_do_problem(.3, 36, 1)
+n49 = to_do_problem(.3, 49, 1)
+n64 = to_do_problem(.3, 64, 1)
+
+cat(cat("n=16:", n16, "\n"), cat("n=25:", n25, "\n"), cat("n=36:", n36, "\n"), cat("n=49:", n49, "\n"),cat("n=64:", n64, "\n"))
+
+````
+
+c) What pattern do you observe among the values for $P(|\overline{Y} - \mu | \leq 0.3)$ when $\overline{Y}$ that you observed for the various values of n?  
+
+    As n increases the probability that the sample mean is within 0.3 of the true mean is increasing towards 1.   
+
+d) Do the results that you obtained in part (b) seem to be consistent with the result obtained
+in Example 7.2?   
+
+    The results agree.  In example 7.2 it is found that 43 samples are needed to have $P(|\overline{Y} - \mu | \leq 0.3) = 0.95$.  This falls between n = 36 for $P(|\overline{Y} - \mu | \leq 0.3) = 0.93$ and n = 49 for $P(|\overline{Y} - \mu | \leq 0.3) = 0.96$  
+    
+--  
+  
+#### 7.2  Refer to Exercise 7.1. Assume now that the amount of fill dispensed by the bottling machine is normally distributed with $\sigma$ = 2.  
+
+a) If $n = 9$ bottles are randomly selected from the output of the machine, what is $P(|\overline{Y} - \mu | \leq 0.3)$? Compare this with the answer obtained in Example 7.2.  
+
+````{r} 
+n9_2 = to_do_problem(.3, 9, 2)
+cat("n=9:", n9_2)
+````
+
+    The probability when $\sigma = 2$ is a little over half the probability when $\sigma = 1$  
+    
+b) Find $P(|\overline{Y} - \mu | \leq 0.3)$ when $\overline{Y}$ is to be computed using samples of sizes $n=25, n=36, n = 49, \text{ and } n = 64$  
+
+````{r}
+
+n25 = to_do_problem(.3, 25, 2)
+n36 = to_do_problem(.3, 36, 2)
+n49 = to_do_problem(.3, 49, 2)
+n64 = to_do_problem(.3, 64, 2)
+
+cat(cat("n=25:", n25, "\n"), cat("n=36:", n36, "\n"), cat("n=49:", n49, "\n"),cat("n=64:", n64, "\n"))
+
+````
+
+c)  What pattern do you observe among the values for $P(|\overline{Y} - \mu | \leq 0.3)$ that you observed for
+the various values of n?
+
+    The probability that $P(|\overline{Y} - \mu | \leq 0.3)$ increases as the number of samples increases.  
+    
+d) How do the respective probabilities obtained in this problem (where $\sigma = 2$) compare to
+those obtained in Exercise 7.1 (where $\sigma = 1$)?  
+
+    The probability for $P(|\overline{Y} - \mu | \leq 0.3)$ is much smaller when $\sigma = 2$.  This makes sense because higher higher true variation means the sample means will have higher variation.  
+    
+--  
+  
+#### 7.3 A forester studying the effects of fertilization on certain pine forests in the Southeast is interested in estimating the average basal area of pine trees. In studying basal areas of similar trees for many years, he has discovered that these measurements (in square inches) are normally distributed with standard deviation approximately 4 square inches. If the forester samples n = 9 trees, find the probability that the sample mean will be within 2 square inches of the population mean.  
+
+$P(-2 \leq \overline{Y} - \mu \leq 2) = P(-2\sqrt{n}/\sigma \leq \sqrt{n}(\overline{Y} - \mu)/\sigma \leq 2\sqrt{n}/\sigma) = P(-1.5\leq Z \leq 1.5) = 1 - 2P(Z > 1.5)$  
+
+````{r}
+print(1 - 2*pnorm(1.5, lower.tail =  FALSE))
+````
+  
+--  
+  
+#### 7.4 Suppose the forester in Exercise 7.11 would like the sample mean to be within 1 square inch of the population mean, with probability .90. How many trees must he measure in order to ensure this degree of accuracy?  
+
+$P(-1 \leq \overline{Y} - \mu \leq 1) = P(-1\sqrt{n}/4 \leq Z \leq 1\sqrt{n}/4) = 1 - 2P(Z > 0.05) = .90$  
+
+The table at the back of the book gives the quantile at 1.64.  I will compute with R as well.  
+
+````{r}
+
+print(qnorm(.05, lower.tail = FALSE))
+````
+
+This means that $1\sqrt{n}/4 = 1.645$  or n = 44.  
+  
+--  
+  
+#### 7.5  The Environmental Protection Agency is concerned with the problem of setting criteria for the amounts of certain toxic chemicals to be allowed in freshwater lakes and rivers. A common measure of toxicity for any pollutant is the concentration of the pollutant that will kill half of the test species in a given amount of time (usually 96 hours for fish species). This measure is called LC50 (lethal concentration killing 50% of the test species). In many studies, the values contained in the natural logarithm of LC50 measurements are normally distributed, and, hence, the analysis is based on ln(LC50) data. Studies of the effects of copper on a certain species of fish (say, species A) show the variance of ln(LC50) measurements to be around 0.4 with concentration measurements in milligrams per liter. If n = 10 studies on LC50 for copper are to be completed, find the probability that the sample mean of ln(LC50) will differ from the true population mean by no more than 0.5.
+  
+$P(-0.5 \leq \overline{Y} - \mu \leq 0.5) = P(-0.5\sqrt{10}/sqrt{0.4} \leq \sqrt{n}(\overline{Y} - \mu)/\sigma \leq 0.5\sqrt{10}/sqrt{0.4}) = P(-2.5\leq Z \leq 2.5) = 1 - 2P(Z > 2.5)$   
+
+````{r}
+print(1 - 2*pnorm(2.5, lower.tail =  FALSE)) 
+````
+
+--  
+  
+#### 7.6 If in Exercise 7.5 we want the sample mean to differ from the population mean by no more than 0.5 with probability 0.95, how many tests should be run?  
+
+Probability 0.95 corresponds to 0.025 probability in the two symmetric tails (once the function is normalized)  
+$P(Z > 0.5\sqrt{n} / \sqrt{0.4}) = 0.025 \Longrightarrow 0.5\sqrt{n} / \sqrt{0.4} = 1.96 \Longrightarrow n = 7$   
+--    
+    
+#### 7.7 Suppose that $X_1,...,X_m$ and $Y_1,...,Y_n$ are independent random samples, with the variables $X_i$ normally distributed with mean $\mu_1$ and variance $\sigma_1^2$ and the variables $Y_i$ normally distributed with mean $\mu_2$ and variance $\sigma_2^2$. The difference between the sample means, $\overline{X} - \overline{Y}$, is then a linear combination of $m+n$ normally distributed random variables and, by Theorem 6.3, is itself normally distributed.  
+
+a) Find $E(\overline{X} - \overline{Y})$.  
+
+    By Theorem 6.3  $E(\overline{X} - \overline{Y}) = E(\overline{X}) - E(\overline{Y}) = \mu_1 - \mu_2$   
+    
+b) Find $V(\overline{X} - \overline{Y})$  
+
+    Since By Theorem 6.3 and Theorem 7.2, $V(\overline{X} - \overline{Y}) = V(\overline{X}) - V(\overline{Y}) = \frac{\sigma_1^2}{n} - \frac{\sigma_2^2}{m}$  
+    
+c) Suppose that $\sigma_1^2 = 2, \sigma_2^2 = 2.5$ and $m=n$.  Find the sample sizes so that $\overline{X} - \overline{Y}$ will be within 1 unit of $\mu_1 - \mu_2$ with probability 0.95.   
+
+    To standardized form of  $(\overline{X} - \overline{Y}) - (\mu_1 - \mu_2)$ is $(\overline{X} - \overline{Y}) - (\mu_1 - \mu_2) \bigg{/} \left(\sqrt{\frac{\sigma_1^2}{n} - \frac{\sigma_2^2}{n}} \right)$   
+    
+    Now the 1.96 quantile corresponds to the 95% for a standard normal, therefore  
+    $1\bigg{/} \left(\sqrt{\frac{\sigma_1^2}{n} - \frac{\sigma_2^2}{n}} \right) = 1.96 \Longrightarrow \sqrt{n} \big{/} \left(\sqrt{\sigma_1^2 -\sigma_2^2} \right) = 1.96 \Longrightarrow  n = (1.96\sqrt{4.5})^2 \Longrightarrow n = 18$ 
+    
+--  
+  
+#### 7.8 Referring to Exercise 7.5, suppose that the effects of copper on a second species (say, species B) of fish show the variance of ln(LC50) measurements to be .8. If the population means of ln(LC50) for the two species are equal, find the probability that, with random samples of ten measurements from each species, the sample mean for species A exceeds the sample mean for species B by at least 1 unit.  
+
+We are given independent random samples $X_1,...,X_{10}$ and $Y_1,...,Y_{10}$ of species A and B respectively, we are  interested in the $P(\overline{X} - \overline{Y} \geq 1)$
+In this problem we have the following givens
+
+$\sigma_A^2 = 0.4$  
+$\sigma_B^2 = 0.8$  
+$n = 10$  
+$\mu_A=\mu_B \quad \Longrightarrow \quad \mu_A - \mu_B = 0$   
+
+using these, the probability the
+
+$P(\overline{X} - \overline{Y} \geq 1) = P((\overline{X} - \overline{Y})\bigg{/}\sqrt{\frac{\sigma_A^2 + \sigma_B^2}{10}} \geq 1\bigg{/}\sqrt{\frac{\sigma_A^2 + \sigma_B^2}{10}})$  
+$= P(Z \geq \sqrt{10}/\sqrt{\sigma_A^2 + \sigma_B^2} = P(Z \geq \sqrt{10 / 1.2})$  
+    
+````{r}   
+
+print(pnorm(sqrt(10/1.2), lower.tail = FALSE))
+    
+````
+  
+--    
+      
+#### 7.9 Ammeters produced by a manufacturer are marketed under the specification that the standard deviation of gauge readings is no larger than 0.2 amp. One of these ammeters was used to make ten independent readings on a test circuit with constant current. If the sample variance of these ten measurements is 0.065 and it is reasonable to assume that the readings are normally distributed, do the results suggest that the ammeter used does not meet the marketing specifications? [Hint: Find the approximate probability that the sample variance will exceed 0.065 if the true population variance is 0.04.]  
+
+We are given independent normally distributed random samples $X_1,...,X_{10}$  with $S^2 = 0.065$. Further, the true population variance is 0.04. 
+
+To make a determination as to whether the measurements indicate the ammeter used does not meet marketing specifications, we will look at $P(S^2 \geq 0.065)$ given that $\sigma^2 = 0.04$.  
+
+We will use Theorem 7.3 with n = 10 to turn this into a problem about a $\chi_9^2$ distribution.  
+
+$P(S^2 > 0.065) = P((n-1)S^2/\sigma^2 > (n-1)0.065/\sigma^2) = P(\chi_9^2 > 9*0.065/0.04) = P(\chi_9^2 > 14.625)$  
+
+````{r}
+
+cat("P(S^2 > 0.065) = ", pchisq(14.625, 9, lower.tail = FALSE)) 
+
+````
+
+There is a 10% chance that a ammeter that meets specifications would have a sample variance of 0.065 or higher. So there is some suggestions that it does not meet specifications, but it is certainly not definite. 
+  
+--  
+      
+#### 7.10  
+
+a) If $U$ has a $\chi^2$ distribution with $\nu$ df, find $E(U)$ and $V(U)$.  
+
+    $E(U) = \frac{1}{2^{\nu/2}\Gamma(\nu/2)}\int\limits_{0}^{\infty}y^{\nu/2 + 1 -1}e^{-y/2} = \frac{1}{2^{\nu/2}\Gamma(\nu/2)}\int\limits_{0}^{\infty}y^{(\nu/2 + 1) -1}e^{-y/2} = \frac{1}{2^{\nu/2}\Gamma(\nu/2)}\int\limits_{0}^{\infty}y^{(\nu + 2)/2-1}e^{-y/2}$   
+ 
+    So I can can turn the integrand into $E(\chi_{\nu+2}^2)$ which is equal to 1.  need to add in the constant terms
+
+    $E(U) = \frac{2^{(\nu+2)/2}\Gamma((\nu+ 2)/2)}{2^{\nu/2}\Gamma(\nu/2)}\int\limits_{0}^{\infty}\frac{1}{2^{(\nu+2)/2}\Gamma((\nu+ 2)/2)}y^{(\nu + 2)/2-1}e^{-y/2} = \frac{2^{(\nu+2)/2}\Gamma((\nu+ 2)/2)}{2^{\nu/2}\Gamma(\nu/2)} = \frac{2 \frac{\nu}{2}\Gamma(\nu/2)}{\Gamma(\nu/2)} = \nu$  
+
+    $V(U) = E(U^2) - E(U)^2$ so just need to calculate $E(U^2)$  This will proceed just as above with $\nu + 4$ degrees of freedom instead of $\nu+2$.  
+
+    $E(U^2) = \frac{1}{2^{\nu/2}\Gamma(\nu/2)}\int\limits_{0}^{\infty}y^{\nu/2 + 2 -1}e^{-y/2} = \frac{1}{2^{\nu/2}\Gamma(\nu/2)}\int\limits_{0}^{\infty}y^{(\nu + 4)/2-1}e^{-y/2} = \frac{2^{(\nu+4)/2}\Gamma((\nu+4)/2)}{2^{\nu/2}\Gamma(\nu/2)}\int\limits_{0}^{\infty}\frac{1}{2^{(\nu+4)/2}\Gamma((\nu+4)/2)}y^{(\nu + 4)/2-1}e^{-y/2} =$  
+    $\frac{2^{(\nu+4)/2}\Gamma((\nu/2 + 2)}{2^{\nu/2}\Gamma(\nu/2)} = 4(\nu/2 + 1)\nu/2$    
+    
+    $V(U) = 4(\nu/2 + 1)\nu/2 - \nu^2 = \nu^2 + 2\nu - \nu^2 = 2\nu$  
+    
+  
+
+b) Using the results of Theorem 7.3, find $E(S^2)$ and $V(S^2)$ when $Y_1,...,Y_n$ is a random
+sample from a normal distribution with mean $\mu$ and variance $\sigma^2$.
+
+Theorem 7.3 says that $(n -1)S^2/\sigma^2$ is $\chi_{n-1}^2$-distributed  
+
+$E((n-1)S^2/\sigma^2) = n-1 \quad\Longrightarrow\quad E(S^2) = \sigma^2$  
+
+$V((n-1)S^2/\sigma^2) = 2(n-1) \quad\Longrightarrow\quad V(S^2) = 2\sigma^4/(n-1)$  
+  
+--  
+  
+#### 7.11  Refer to Exercise 7.5. Suppose that n = 20 observations are to be taken on ln(LC50) measurements and that $\sigma^2 = 1.4$. Let $S^2$ denote the sample variance of the 20 measurements.  
+
+a) Find a number b such that $P(S^2 \leq b) = 0.975$.  
+
+    From exercise 7.5, the population is normally distributed.  So by Theorem 7.3   
+    
+    P(S^2 \leq b) = P((n-1)S^2/\sigma^2 \leq (n-1) b /\sigma^2) = P(\chi_{19}^2 \leq 19b/1.4) = 0.975$   
+    
+````{r}
+
+print(qchisq(0.975, 19))
+````
+    So $P(\chi_{19}^2 \leq 19b/1.4) = 0.975 \quad\Longrightarrow\quad 19b/1.4 = 32.85233 \quad\Longrightarrow\quad b = 2.420698$  
+    
+    
+b) Find a number a such that $P(a \leq S^2) = 0.975$.
+
+    Same as in part a  
+    
+    $P(a \leq S^2) = P(19b/1.4 \leq \chi_{19}^2) = 0.975$  
+    
+````{r}
+
+print(qchisq(0.975, 19, lower.tail = FALSE))
+````
+    So $P(19a/1.4 \leq \chi_{19}^2) = 0.975 \quad\Longrightarrow\quad 19a/1.4 = 8.906516 \quad\Longrightarrow\quad b = 0.6562696$  
+
+    
+c) If a and b are as in parts a) and b), what is $P(b \leq S^2 \leq a)$?  
+
+    this is the probability of not being in the outer 0.025 tails or $1 - 2 * 0.025 = 0.95$  
+     
+--  
+         
+#### 7.12  Refer to Exercise 7.3. Suppose that in the forest fertilization problem the population standard deviation of basal areas is not known and must be estimated from the sample. If a random sample of n = 9 basal areas is to be measured, find two statistics $g_1$ and $g_2$ such that $P(g_1 \leq (\overline{Y} - \mu) \leq g_2) = 0.90$.  
+  
+
+When we want to estimate the difference between the sample mean and population mean and do not know the population variance, we will use a t distribution.  The steps are to 
+- standard normalize $\overline{Y} - \mu$  
+    By Theorem 7.1  $\overline{Y} - \mu \quad\Longrightarrow\quad Z = \sqrt(n)(\overline{Y} - \mu)/\sigma$  
+    
+- Esitmate of the variance scaled to produce a $\chi_{n-1}^2$ distribution.  
+    By Theorem 7.3 $(n-1)S^2/\sigma^2$ is $\chi_{n-1}^2$  
+    
+- Use the two above to get a t distribution with n-1 df.  
+    $T = \frac{Z}{\sqrt{W/\nu}}$ where W is $\chi_{\nu}^2$  
+    
+So in this case, the random variable of interest is given by 
+
+$\sqrt{n}(\overline{Y} - \mu)/\sigma \bigg{/} \sqrt{\frac{(n-1)S^2}{(n-1)\sigma^2}} = \sqrt{n}\frac{(\overline{Y} - \mu)}{S}$ which has a t distribution with n-1 df.  
+
+$P(g_1 \leq (\overline{Y} - \mu) \leq g_2) = P(g_1\sqrt{n} / S \leq \sqrt{n}(\overline{Y} - \mu)/S \leq g_2\sqrt{n}/S) = 0.90$
+  
+The simple thing to do now is to break $1 - 0.9 = 0.1$ in half so  we want   
+
+$P(t_{n-1} \leq g_1\sqrt{n} / S) = 0.05$ and $P(g_2\sqrt{n} / S \leq t_{n-1}) = 0.05$  
+
+Now plugging in $n = 9$ gives 
+
+$P(t_8 \leq 3g_1/ S) = 0.05$ and $P(3g_2/ S \leq t_8) = 0.05$ 
+
+````{r}
+print(c(qt(0.05, 8), qt(0.05, 8, lower.tail = FALSE)))
+
+````
+
+$3g_1/ S = -1.859548$ and $3g_2/ S =1.859548$ or  
+
+$g_1 = \frac{-1.859548}{3}S$ and $g_2 = \frac{1.859548}{3} S$  
+
+--  
+  
+#### 7.13 If Y is a random variable that has an F distribution with $\nu_1$ numerator and $\nu_2$ denominator degrees of freedom, show that $U = \frac{1}{Y}$ has an F distribution with $\nu_2$ numerator and $\nu_1$ denominator degrees of freedom.  
+
+This is basically by definition.  
+
+Y has an F distribution means that there are independnet $\chi_{\nu_1}^2$ and $\chi_{\nu_2}^2$ distributions $W_1$ and $W_2$  with $Y = \frac{W_1/\nu_1}{W_2/\nu_2}$, therefore   
+
+$U = \frac{1}{Y} = \frac{1}{\frac{W_1/\nu_1}{W_2/\nu_2}} = \frac{W_2/\nu_2}{W_1/\nu_1}$ as to be shown.  
+  
+-- 
+  
+#### 7.14 Suppose that $Z$ has a standard normal distribution and that Y is an independent $\chi^2$-distributed random variable with $\nu$ degrees of freedom. Then, according to Definition 7.2, $T=\frac{Z}{\sqrt{Y/\nu}}$ has a T distribution with $\nu$ degrees of freedom.  
+
+a) If $Z$ has a standard normal distribution, give $E(Z)$ and $E(Z^2)$. [Hint: For any random variable, $E(Z^2) = V(Z) + E(Z)^2$]  
+
+
+    For a standard normal $V(Z) = 1$, so 
+
+    $E(Z) = 0$  
+    $E(Z^2) = 1 - 0 = 1$  
+
+b) According to the result derived in Exercise 4.90 (a),if $Y$ has a $\chi^2$ distribution with $\nu$ df, then  
+
+    $(*) E(Y^a) = \frac{\Gamma\left(\frac{\nu}{2} + a \right)}{\Gamma\left( \frac{\nu}{2}\right)}2^a, \quad \quad \text{if } \nu > -2a$. 
+    
+    Use this result, the result from part a), and the structure of T to show the following. [Hint: Recall the independence of Z and Y]  
+    
+    1) $E(T) = 0, \text{ if } \nu > 1$.  
+        
+        $E(T) = E(Z(Y/\nu)^{-\frac{1}{2}} = E(Z)E((Y/\nu)^{-\frac{1}{2}}) = 0$ by part a)  
+        
+    2) $V(T) = \frac{\nu}{\nu - 2}, \text{ if } \nu > 2$  
+    
+        $V(T) = E(T^2) = \nu E(Z^2/Y) = \nu E(Z^2)E(Y^{-1}) = \nu E((Y)^{-1}) = \nu \frac{\Gamma\left(\frac{\nu}{2} - 1 \right)}{\Gamma\left( \frac{\nu}{2}\right)}2^{-1}= \frac{1}{2}\frac{\nu}{\frac{\nu}{2}-1} = \frac{\nu}{\nu - 2}, \text{ for } \nu > 2$  
+          
+--  
+  
+#### 7.15 Use the structures of T and F given in Definitions 7.2 and 7.3, respectively, to argue that if T has a t distribution with $\nu$ df, then $U = T^2$ has an F distribution with 1 numerator degree of freedom and $\nu$ denominator degrees of freedom.  
+
+$T = \frac{A}{\sqrt{W/\nu}}$ where $W$ is a $\chi^2$ distribution with $\nu$ df, and $W$ and $Z$ are independent.  
+
+$T^2 = \frac{Z^2}{W/\nu}$, by Theorem 7.2 $Z^2$ has a $\chi^2$ distribution with 1 df.  SO $T^2$ satisfies the definition of an F distribution with 1 numerator degree of freedom and $\nu$ denominator degrees of freedom.  
+
+--   
+  
+#### 7.16  Suppose that $W_1$ and $W_2$ are independent $\chi^2$-distributed random variables with $\nu_1$ and $\nu_2$ df, respectively. According to Definition 7.3,  $F = \frac{W_1/\nu_1}{W_2/\nu_2}$ has an F distribution with $\nu_1$ and $\nu_2$ numerator and denomenator degrees of freedom, respectively.  Use the preceeding structure of F, the indepedence of $W_1$ and $W_2$, and the result summarized in Exercise 7.14 b) to show  
+
+a) $E(F) - \frac{\nu_2}{\nu_2 -2}$ if $\nu_2 > 2$  
+
+    $E(F) = \frac{\nu_2}{\nu_1}E(W_1W_2^{-1}) = \frac{\nu_2}{\nu_1}E(W_1)E(W_2^{-1}) = \frac{\nu_2}{\nu_1}\nu_1E(W_2^{-1}) = \nu_2E(W_2^{-1})$  
+    by (*) in Exercise 7.14 b)  
+    $E(F) = \nu_2E(W_2^{-1}) = \nu_2\frac{\Gamma\left(\frac{\nu}{2} -1 \right)}{\Gamma\left( \frac{\nu}{2}\right)}2^{-1} = \nu_2(\nu_2/2 - 1)\frac{1}{2} = \frac{\nu_2}{\nu_2 - 2}, \text{ for } \nu > 2$  
+      
+b) $V(F) = \left[ 2\nu_2^2(\nu_1 + \nu_2 - 2)\right] / \left[ \nu_1(\nu_2 - 2)^2(\nu_2 - 4)\right] \quad$, if $\nu_2 > 4$    
+
+    $W_1$ and $W_2$ are independent, so $W_1^2$ and $W_2^{-2}$ are independent.  
+    
+    $V(F) = E(F^2) - E(F)^2 = E(F^2) - \left(\frac{\nu_2}{\nu_2 - 2}\right)^2$   
+    
+    $E(F^2) = \frac{\nu_2^2}{\nu_1^2}E(W_1^2W_2^{-2})$  
+    
+    $E(W_1W_2^{-1}) = E(W_1^2)E(W_2^{-2}) = \frac{\Gamma\left(\frac{\nu_1}{2} + 2 \right)}{\Gamma\left( \frac{\nu_1}{2}\right)}\frac{\Gamma\left(\frac{\nu_2}{2} - 2 \right)}{\Gamma\left( \frac{\nu_2}{2}\right)} = \frac{(\nu_1 + 2)\nu_1}{(\nu_2 -2)(\nu_2 - 4)}$  
+    
+    $V(F) = \frac{\nu_2^2(\nu_1 + 2)}{\nu_1(\nu_2 -2)(\nu_2 - 4)} - \left(\frac{\nu_2}{\nu_2 - 2}\right)^2 = \frac{\nu_2^2(\nu_1 + 2)(\nu_2 - 2) - \nu_2^2\nu1(\nu_2 - 4)}{\nu_1(\nu_2 - 2)^2(\nu_2 -4)} = \frac{\nu_2^2(\nu_1\nu_2 - 2\nu_1 -2\nu_2 + 4 -\nu_1\nu_2  + 4\nu_1)}{\nu_1(\nu_2 - 2)^2(\nu_2 -4)}$   
+    $= \left[ 2\nu_2^2(\nu_1 + \nu_2 - 2)\right] / \left[ \nu_1(\nu_2 - 2)^2(\nu_2 - 4)\right]\quad$, if $\nu_2 > 4$  
+    
+--  
+  
+#### 7.17 Refer to Exercise 7.16. Suppose that F has an F distribution with $\nu_1 = 50$ numerator degrees of freedom and $\nu_2 = 70$ denominator degrees of freedom. Notice that Table 7, Appendix 3, does not contain entries for 50 numerator degrees of freedom and 70 denominator degrees of freedom.  
+
+a) What is E(F)?  
+
+    $E(F) = \frac{70}{70 - 2} = 1.029412$  
+    
+b) Give $V(F)$  
+
+    $V(F) = \left[ 2\cdot 70^2(50 + 70 - 2)\right] / \left[ 50(70 - 2)^2(70 - 4)\right] = 0.07578379$   
+
+c) Is it likely that F will exceed 3? [Hint: Use Tchebysheff's Theorem]  
+
+    Tchebysheff's Theorem gives: For any $k > 0$  
+    
+    $P(|F - 1.029412| \geq 0.07578379 \cdot k) \leq \frac{1}{k^2}$  
+    
+    Let $k = (3 - 1.029412) / 0.07578379) = 26.00276 =  > 0$, then by Tchebysheff's Inequality  
+    
+    P(F \geq 3) = P(F \geq 0.07578379 \cdot k + 1.029412) = P(F - 1.029412 \geq 0.07578379 \cdot k) \leq P(|F - 1.029412| \geq 0.07578379 \cdot k) \leq \frac{1}{k^2} =  \frac{1}{26.00276^2} = 0.001478976$  
+    
+    No it is not likely tha F exceeds 3.  
+    
+--  
+  
+#### 7.18 Let $S_1^2$ denote the sample variance for a random sample of ten ln(LC50) values for copper and let $S_2^2$ denote the sample variance for a random sample of eight ln(LC50) values for lead, both samples using the same species of fish. The population variance for measurements on copper is assumed to be twice the corresponding population variance for measurements on lead. Assume $S_1^2$ to be independent of $S_2^2$.  
+
+
+
+a) Find a number b such that $P \left(\frac{S_1^2}{S_2^2} \leq b \right) = 0.95$  
+
+    Let $\sigma_1^2$ be the population variance of copper and $\sigma_2^2$ be the population variance of lead. Then it is assumed that $\sigma_1^2 = 2 \sigma_2^2$  
+    
+    Let $n_1 = 10$ is the number of samples for copper and $n_2 = 8$ is the number of samples for lead.  
+    
+    Note: $\frac{(n_1 - 1) S_1^2 / (n_1 - 1) \sigma_1^2}{(n_2 - 1)S_2^2 / (n_2 - 1)\sigma_2^2} = \frac{ S_1^2 / \sigma_1^2}{S_2^2 / \sigma_2^2} = \frac{\sigma_2^2}{\sigma_1^2}\frac{S_1^2}{S_2^2} = \frac{1}{2}\frac{S_1^2}{S_2^2}$ has an F distribution with 9 numerator and 7 denomenator degrees of freedom.  
+    
+    So $P \left(\frac{S_1^2}{S_2^2} \leq b \right) = $P \left(\frac{1}{2}\frac{S_1^2}{S_2^2} \leq \frac{1}{2} b \right) = 0.95$   
+    
+    Using R    
+
+    
+`````{r}
+print(qf(0.95, 9, 7))
+
+````
+  
+so $\frac{1}{2} b = 3.676675 \quad\Longrightarrow\quad b = 7.35335$   
+    
+b)  Find a number a such that $P \left(a \leq \frac{S_1^2}{S_2^2} \right) = 0.95$  [Hint: Use the result of Exercise 7.13 and notice that $P(U_1/U_2 \leq k)= P(U_2/U_1 \geq 1/ k)$ .]  
+  
+    From Exercise 7.12 $\frac{\sigma_2^2}{\sigma_1^2}\frac{S_1^2}{S_2^2}$ has an F distribution $\quad\Longrightarrow\quad \frac{\sigma_1^2}{\sigma_2^2}\frac{S_2^2}{S_1^2}$ has an F distribution.  
+    
+    So in this case $2\frac{S_2^2}{S_1^2}$ has an F distribution
+    
+    $P \left( a \leq \frac{S_1^2}{S_2^2} \right) = P \left(\frac{S_2^2}{S_1^2} \leq a \right) = P\left( 2\frac{S_2^2}{S_1^2}  \leq 2a \right) = 0.95$  
+    
+    From the computation in Part a) we get   
+    
+    $2a = 3.676675 \quad\Longrightarrow\quad a = 1.838337$    
+    
+c) If a and b are as in the previous parts find $P \left(a \leq \frac{S_1^2}{S_2^2} \leq b \right)$  
+
+    $P \left(a \leq \frac{S_1^2}{S_2^2} \leq b \right) =  1 - P(\frac{S_1^2}{S_2^2} \leq a) - P(b \leq \frac{S_1^2}{S_2^2}) = 1 - (1 - P \left(a \leq \frac{S_1^2}{S_2^2} \right)) - (1 -P \left(\frac{S_1^2}{S_2^2} \leq b \right) ) = 1 - 0.05 - 0.05 = 0.9$  
+    
+--  
+  
+#### 7.19  Let $Y_1,...,Y_5$ be a random sample of size 5 from a normal population with mean 0 and variance 1, and let $\overline{Y} = \frac{1}{5}\sum\limits_{i = 1}^{5}Y_i$.  Let $Y_6$ be another independent observation from the same population.  
+
+a) What is the distribution of $W = \sum\limits_{i = 1}^{5}Y_1^2$? Why?  
+
+    The Y_i are standard normal random variables, so by Theorem 7.2, $W$ has a $\chi^2$ distribution with 5 df.  
+    
+b) What is the distribution of $U = \sum\limits_{i = 1}^{5}(Y_i - \overline{Y})^2$? Why?  
+
+    By Theorem 7.3, with $\sigma^2$ = 1,  this is a $\chi^2$ distribution with 4 degrees of freedom.  
+    
+c) What is the distribution of $\sum\limits_{i = 1}^{5}(Y_i - \overline{Y})^2 + Y_6^2$? Why?  
+
+    By part b),  $\sum\limits_{i = 1}^{5}(Y_i - \overline{Y})^2$ is $\chi^2$ with 4 df.  
+    
+    By Theorem 7.1, $Y_6^2$ is $\chi^2$ with 1 df  
+    
+    Since $\sum\limits_{i = 1}^{5}(Y_i - \overline{Y})^2$ and $Y_6^2$ are independent 
+    
+    $m_{\sum\limits_{i = 1}^{5}(Y_i - \overline{Y})^2 + Y_6^2}(t)= m_{\sum\limits_{i = 1}^{5}(Y_i - \overline{Y})^2}(t)m_{Y_6^2}(t) = (1 - 2t)^{-4/2}(1-2t)^{-1/2} = (1-2t)^{-5/2}$  
+    
+    therefore $\sum\limits_{i = 1}^{5}(Y_i - \overline{Y})^2 + Y_6^2$ is $\chi^2$ with 5 df.  
+    
+--      
+  
+#### 7.20 Suppose that $Y_1,Y_2,...,Y_5,Y_6, \overline{Y}, W, \text{ and } U4 are as defined in Exercise 7.19  
+
+a) What is the distribution of $\sqrt{5} Y_6/\sqrt{W}$? Why?  
+
+    Y_6 is standard normal and, by 7.19 a), W is $\chi^2$ with 5 df.  
+    
+    So by Definition 7.2  
+    
+    $\sqrt{5} Y_6/\sqrt{W}$ has a t distribution with 5 df.  
+    
+b) What is the distribution of $2 Y_6/\sqrt{U}$? Why?   
+
+    Y_6 is standard normal and, by 7.19 b), U is $\chi^2$ with 4 df.   
+
+    So by Definition 7.2   
+    
+    $2 Y_6/\sqrt{U}$ has a t distribution with 4 df.  
+    
+c) What is the distribution of $2(5\overline{Y}^2+Y_6^2) / U$? Why?  
+
+  
+    Since the $Y_i$ are standard normal, By Theorem 7.1 $\overline{Y} = \sum\limits_{i = 1}^5$ is normal with mean 0 and variance $\frac{1}{5}$. Therefore $\sqrt{5}\overline{Y}$ is standard normal, so by Theorem 7.2 $5\overline{Y}^2$ is $\chi^2$ with one degree of freedom.  
+    
+    Since $\overline{Y}$ and $Y_6$ are independent, $5\overline{Y}^2+Y_6^2$ is $\chi^2$ with 2 df.
+    
+    Note that by theorem 7.3 $U = \sum\limits_{i = 1}^{5}(Y_i - \overline{Y})^2$ and $\overline{Y}$ are independent, so $U = \sum\limits_{i = 1}^{5}(Y_i - \overline{Y})^2$ and $5\overline{Y}^2+Y_6^2$ are indepents.  
+    
+    By Definition 7.3,  
+    
+    $2(5\overline{Y}^2+Y_6^2) / U = \frac{(5\overline{Y}^2+Y_6^2) / 2}{U/4}$ is an F distribution with 2 numerator and 4 denominator degrees of freedom.  
+    
+--  
+  
+#### 7.21  Suppose that independent samples (of sizes $n_i$ ) are taken from each of k populations and that population i is normally distributed with mean $\mu_i$ and variance $\sigma^2, \; i = 1,2,...,k$. That is, all populations are normally distributed with the same variance but with (possibly) different means. Let $\overline{X_i}$ and $S_i^2$ for $i = 1,2,...,k$ be the respective sample means and variances. Let $\theta = c_1\mu_1 + ... + c_k\mu_k$ where $c_1,...,c_k$ are given constants.   
+
+a) Give the distribution of $\hat{\theta} = c_1 \overline{X_1} + ... + c_k \overline{X_k}$. Provide reasons for any claims that you make.  
+
+    By Theorem 7.1, the $\overline{X_i}$ are normally distributed with mean $\mu_i$ and variance $\sigma^2 / n_i$.  So by Theorem 6.3, $\hat{\theta}$ is normally distributed with mean $\sum\limits_{i = 1}^kc_k\mu_k$ and variance $\sum\limits_{i=1}^k \sigma^2/n_i$.  
+    
+b) Give the distribution of $\frac{SSE}{\sigma^2}$ where $SSE = \sum\limits_{i-1}^k(n_i-1)S_i^2$  
+
+    $\frac{SSE}{\sigma^2} = \sum\limits_{i-1}^k\frac{(n_i-1)S_i^2}{\sigma^2}$  
+    
+    For each i, by Theorem 7.3, $\frac{(n_i-1)S_i^2}{\sigma^2}$ is $\chi^2$ with $n_i -1$ df and $\frac{(n_1-1)S_1^2}{\sigma^2}, ..., \frac{(n_k-1)S_k^2}{\sigma^2}$ are independent so 
+    
+    $\frac{SSE}{\sigma^2} = \sum\limits_{i-1}^k\frac{(n_i-1)S_i^2}{\sigma^2}$ is $\chi^2$ with $n_1+...+n_k -k$ df.  
+    
+c) Give the distribution of $\frac{\hat{\theta} - \theta}{\sqrt{\left(c_1^2/n_1 +...+c_k^2/n_k \right) MSE}}$ where $MSE = \frac{SSE}{n_1+...+n_k -k}$  
+
+    By part a) $\frac{\hat{\theta} - \theta}{\sqrt{c_1^2/n_1 +...+c_k^2/n_k}}$ is standard normal and by part b) SSE is $\chi^2$ with $n_1+...+n_k -k$ df.   
+    
+    Therefore, by definition 7.2, $\frac{\hat{\theta} - \theta}{\sqrt{\left(c_1^2/n_1 +...+c_k^2/n_k \right) MSE}}$ has a t distribution with  $n_1+...+n_k -k$ df.  
+    
+--
+
+    
+    
+
+    
