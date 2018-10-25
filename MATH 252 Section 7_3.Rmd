@@ -11,3 +11,220 @@
 ### Main Topics   
 - Theorem 7.4: Let $Y_1,...,Y_n$ be independent and identically distributed random variables with $E(Y_i) = \mu < \infty$ and $V(Y_i) = \sigma^2 < \infty$.  Define  $U_n = \sqrt{n}\left(\frac{\overline{Y} - \mu}{\sigma}\right)$ where $\overline{Y} = \frac{1}{n}\sum\limits_{i = 1}^nY_i$.  Then the distribution function of $U_n$ converges to a standard notmal distribution function as $n\rightarrow\infty$.  
 
+- Another way of to state the convergense is $P(a \leq U_n \leq b) \;\rightarrow\; \int\limits_{a}^b\left(\frac{1}{\sqrt{2\pi}}\right) e^{-\frac{u^2}{2}}du$  
+    For large n, probability statements about $U_n$ can be approximated by corresponding probability statements for the standard normal distribution.  
+    
+- One way central limit theorem is used is to make estimates about population parameters even when the distribution of the population is unknown.  
+
+### Exercises  
+
+#### 7.22 The fracture strength of tempered glass averages 14 (measured in thousands of pounds per square inch) and has standard deviation 2.  
+
+Population mean $\mu =14$, population standard deviation $\sigma =2$.  
+
+a) What is the probability that the average fracture strength of 100 randomly selected pieces
+of this glass exceeds 14.5?  
+
+    100 samples is large enough to apply the central limit theorem.  
+
+    $P(\overline{Y} > 14.5) = P(10\left(\frac{\overline{Y} - 14)}{2}\right) >  10\left(\frac{14.5 - 14}{2}\right)) \approx P(Z > \frac{5}{2})$  
+
+````{r}
+print(pnorm(5/2, lower.tail = FALSE))
+````
+
+  $P(\overline{Y} > 14.5) \approx 0.006209665$
+
+
+b) Find an interval that includes, with probability 0.95, the average fracture strength of 100
+randomly selected pieces of this glass.  
+
+    $P(a \leq \overline{Y} \leq b) \approx P(10(a - 14)/2 \leq Z \leq 10(a -14)/2) = P(5a-35 \leq Z \leq 5b - 35) = 0.95$  
+    
+    So take 0.025 for both tails $P(z \leq 5a - 35) = 0.025$ and $P(5b-35 < Z) = 0.025$   
+    By symmetry of the standard normal distribution, only one of these need be calculated   
+    
+````{r}
+print(qnorm(0.025))
+````
+
+Of course 1.96 is the standard quantile for 95% of Z  
+
+$5a-70 = -1.96 \quad \Longrightarrow \quad a = 13.608$  
+
+$5b-70 = 1.96 \quad \Longrightarrow \quad b = 14.392$    
+
+--  
+  
+#### 7.23 An anthropologist wishes to estimate the average height of men for a certain race of people. If the population standard deviation is assumed to be 2.5 inches and if she randomly samples 100 men, find the probability that the difference between the sample mean and the true population mean will not exceed .5 inch.
+
+$P(-0.5 \leq \overline{Y} - \mu \leq 0.5) = P(-0.5 * 10/2.5 \leq 10(\overline{Y} - \mu)/2.5 \leq 0.5*10/2.5) \approx P(-2 \leq Z \leq 2) = 1 - 2 * P(Z > 2)$  
+
+````{r}
+print(1 - 2*pnorm(2, lower.tail = FALSE))
+````
+
+$P(-0.5 \leq \overline{Y} - \mu \leq 0.5) \approx 0.9544997$  
+
+--  
+  
+#### 7.24  Suppose that the anthropologist of Exercise7.23 wants the difference between the sample mean and the population mean to be less than 0.4 inch, with probability 0.95. How many men should she sample to achieve this objective?  
+
+$P(-0.4 < \overline{Y} - \mu < 0.4) = P(-\sqrt{n}0.4/2.5 < \sqrt{n}(\overline{Y} - \mu)/2.5 < \sqrt{n}0.4/2.5) \approx P(-\sqrt{n}0.4/2.5 < Z < \sqrt{n}0.4/2.5) = 0.95$
+
+````{r}
+print(qnorm(0.025, lower.tail = FALSE))
+````
+
+$\sqrt{n}0.4/2.5 = 1.96 \quad\Longrightarrow\quad n = 151$  
+
+--  
+  
+#### 7.25 Workers employed in a large service industry have an average wage of $7.00 per hour with a standard deviation of $0.50. The industry has 64 workers of a certain ethnic group. These workers have an average wage of $6.90 per hour. Is it reasonable to assume that the wage rate of the ethnic group is equivalent to that of a random sample of workers from those employed in the service industry? [Hint: Calculate the probability of obtaining a sample mean less than or equal to $6.90 per hour.]  
+
+
+$\mu = 7.0, \sigma= 0.50, n = 64, q = 6.90$  
+
+$P(\overline{Y} \leq 6.9) = P(8(\overline{Y} - 7)/ 0.5 \leq 8(6.9 - 7)/0.5) \approx P(Z \leq -1.6)$  
+
+````{r}
+print(pnorm(-1.6))
+````
+
+$P(\overline{Y} \leq 6.9) \approx 0.05479929$  
+
+This is a low probability, so we would say it is not reasonable to assume that the wage rate of the ethnic group is equivalent to that of a random sample of workers.  
+
+--  
+  
+#### 7.26  The acidity of soils is measured by a quantity called the pH, which may range from 0 (high acidity) to 14 (high alkalinity). A soil scientist wants to estimate the average pH for a large field by randomly selecting n core samples and measuring the pH in each sample. Although the population standard deviation of pH measurements is not known, past experience indicates that most soils have a pH value of between 5 and 8. If the scientist selects n = 40 samples, find the approximate probability that the sample mean of the 40 pH measurements will be within .2 unit of the true average pH for the field. [Hint: See Exercise 1.17.]  
+
+Exercise 1.17 states: The range of a set of measurements is the difference between the largest and the smallest values. The empirical rule suggests that the standard deviation of a set of measurements maybe roughly
+approximated by one-fourth of the range (that is, range/4)
+
+Using this rule we have $\sigma = 3/4$
+
+$P(|\overline{Y} - \mu| \leq 0.2) = P(\sqrt{40}|\overline{Y} - \mu|/0.75 \leq \sqrt{40}0.2/0.75) \approx P(|Z| \leq 1.686548) = 1 - 2* P(1.686548 < Z)$  
+
+````{r}
+print(1 - 2*pnorm(1.686548, lower.tail = FALSE))
+````
+
+$P(|\overline{Y} - \mu| \leq 0.2) \approx 0.9083097$  
+
+--  
+  
+  
+#### 7.27  Suppose that the scientist of Exercise 7.46 would like the sample mean to be within .1 of the true mean with probability .90. How many core samples should the scientist take?  
+
+$P(|\overline{Y} - \mu)| \leq 0.1) \approx P(|Z| \leq \sqrt{n}0.1/0.75) = 0.90$  
+
+We will use the 1.68 quantile for 90%  
+
+$\sqrt{n}0.1/0.75 = 1.68 \quad\Longrightrrow\quad n = 158.76, so wil take n = 159.  
+
+--  
+  
+#### 7.28  An important aspect of a federal economic plan was that consumers would save a substantial portion of the money that they received from an income tax reduction. Suppose that early estimates of the portion of total tax saved, based on a random sampling of 35 economists, had mean 26% and standard deviation 12%.  
+
+a) What is the approximate probability that a sample mean estimate, based on a random sample of n = 35 economists, will lie within 1% of the mean of the population of the estimates of all economists?  
+
+$P(|\overline{Y} - \mu| \leq 1) \approx P(|Z| \leq \sqrt{35}/12) = P(|Z| \leq 0.4930066) = 1 - 2P(0.4930066 < Z)$
+
+````{r}
+print(1 - 2*pnorm(0.4930066, lower.tail = FALSE))
+````
+
+$P(|\overline{Y} - \mu| \leq 1) \approx 0.3779921$ 
+
+
+b) Is it necessarily true that the mean of the population of estimates of all economists is equal to the percent tax saving that will actually be achieved?
+
+Of course not, what do Economists know.   
+
+--  
+  
+#### 7.29 The length of time required for the periodic maintenance of an automobile or another machine usually has a mound-shaped probability distribution. Because some occasional long service times will occur, the distribution tends to be skewed to the right. Suppose that the length of time required to run a 5000-mile check and to service an automobile has mean 1.4 hours and standard deviation 0.7 hour. Suppose also that the service department plans to service 50 automobiles per 8-hour day and that, in order to do so, it can spend a maximum average service time of only 1.6 hours per automobile. On what proportion of all workdays will the service department have to work overtime?  
+
+
+Let $Y_i, i = 1,...,50$ be the service time of the $i^{th}$ vehicle, then $\overline{Y}$ is the sample mean service time for a given day. We are interested in  
+
+$P(\overline{Y} > 1.6) \approx P(Z > \sqrt{50}(1.6 - 1.4) / 0.7) = P(Z > 2.020305)$  
+
+````{r}
+print(pnorm(2.020305, lower.tail = FALSE))
+````
+
+So the service department will need to work overtime 2.2% of the days  
+
+--  
+  
+#### 7.30  Shear strength measurements for spot welds have been found to have standard deviation 10 pounds per square inch (psi). If 100 test welds are to be measured, what is the approximate probability that the sample mean will be within 1 psi of the true population mean?
+
+
+$P(|\overline{Y} - \mu| \leq 1) \approx P(|Z| \leq 1) = 1 - 2P(Z>1)$  
+
+````{r}
+print(1-2*pnorm(1, lower.tail = FALSE))
+````
+
+$P(|\overline{Y} - \mu| \leq 1) \approx 0.6826895$  
+
+--  
+  
+#### 7.31 Refer to Exercise 7.50. If the standard deviation of shear strength measurements for spot welds is 10 psi, how many test welds should be sampled if we want the sample mean to be within 1 psi of the true mean with probability approximately .99?  
+
+$P(|\overline{Y} - \mu| \leq 1) \approx P(|Z| \leq \sqrt{n}/10) = 1 - 2P(Z>\sqrt{n}/10) = 0.99  \quad\Longrightarrow\quad P(Z>\sqrt{n}/10) = 0.01/2 = 0.005$  
+
+````{r}
+print(qnorm(0.01/2, lower.tail = FALSE))
+````
+
+So $\sqrt{n}/10 =  2.575829 \quad\Longrightarrow\quad n = 664  
+
+--  
+  
+#### 7.32 Resistors to be used in a circuit have average resistance 200 ohms and standard deviation 10 ohms. Suppose 25 of these resistors are randomly selected to be used in a circuit. 
+
+a)  What is the probability that the average resistance for the 25 resistors is between 199 and 202 ohms?  
+
+$P(199 \leq \overline{y} \leq 202) \approx P(-\sqrt{25}/10 \leq Z \leq 2\sqrt{25}/10) = 1 - P(Z < -\sqrt{25}/10) - P(2sqrt{25}/10 < Z)$  
+
+````{r}
+print(1 - pnorm(-sqrt(25)/10) - pnorm(2*sqrt(25)/10, lower.tail = FALSE))
+````
+
+$P(199 \leq \overline{y} \leq 202) \approx 0.533$  
+
+
+b)  Find the probability that the total resistance does not exceed 5100 ohms.[Hint:see Example 7.9.]    
+
+$P(25\overline{Y} \leq 5100) \approx P(Z \leq \sqrt{25}(5100/25 - 200)/10) = P(Z \leq 2)$  
+
+````{r}
+
+print(pnorm(2))
+````
+
+
+P(25\overline{Y} \leq 5100) \approx 0.9772499$  
+
+--  
+  
+#### 7.33  One-hour carbon monoxide concentrations in air samples from a large city average 12 ppm (parts per million) with standard deviation 9 ppm.  
+
+a) Do you think that carbon monoxide concentrations in air samples from this city are normally
+distributed? Why or why not?  
+  
+    No, minimum value of the concentration is 0, this is not consistent with a normal distribution.  The 
+book uses the z-score to establish this.  The z-score is defined as $z = \frac{x - \mu}{\sigma}$ this measures how far away from the mean a given point is.  For the minimum value of concentration $z = (0 - 12)/9 = -1.33$.  This is not an extreme value and yet is the minimum value.  The book then vaguely indicates that the concentrations can not be normally distributed (although I can "see" that this is true, it would  be nice if something more formal was provided.)
+  
+b) Find the probability that the average concentration in 100 randomly selected samples will
+exceed 14 ppm.  
+
+
+
+
+
+
+
